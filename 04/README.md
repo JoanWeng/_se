@@ -70,7 +70,7 @@ git branch -d developGitBranch
    ```
 
 4. **送出 Pull Request（本次作業實際做法：全程在 GitHub 網頁操作）**：
-   在自己 fork 的 repo 頁面按 **Compare & pull request** → **Create pull request**。
+   在自己 fork 的 repo 頁面按 **Pull requests** → **New pull request**。
    - base（合併到哪裡）：**母專案** `se-test-Joan/git-example` 的 `main`
    - compare（要合併誰）：**自己的 fork** `JoanWeng/git-example-fork` 的分支
    - 送出後由母專案管理者審核。

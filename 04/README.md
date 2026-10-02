@@ -69,18 +69,37 @@ git branch -d developGitBranch
    git fetch upstream
    ```
 
-4. **送出 Pull Request**：從「自己的 fork 的分支」往「母專案的目標分支」開 PR。
+4. **送出 Pull Request（本次作業實際做法：全程在 GitHub 網頁操作）**：
+   在自己 fork 的 repo 頁面按 **Compare & pull request** → **Create pull request**。
+   - base（合併到哪裡）：**母專案** `se-test-Joan/git-example` 的 `main`
+   - compare（要合併誰）：**自己的 fork** `JoanWeng/git-example-fork` 的分支
+   - 送出後由母專案管理者審核。
    - 誰可以 merge：**只有母專案（上游）的管理者可以按下 Merge**。
    - 對方只能送 PR、只能回覆討論，**沒有權限直接 push 或 merge 母專案**。
-5. **母專案管理者審核後合併**：
+5. **母專案管理者審核後合併（本次作業實際做法：在 GitHub 網頁按合併鈕）**：
+
+   進入該 Pull Request 頁面 → 確認 **This branch has no conflicts with the base branch**
+   → 選擇 **Create a merge commit** → 按綠色 **Merge pull request** → 按 **Confirm merge**。
+   合併完成後母專案的 `main` 就會自動更新，不需要在本地執行任何 merge 指令。
+   本地只要 `git pull` 就能取得合併後的結果。
 
    ```bash
-   # 在母專案 clone 內
+   # 合併後，在本地把母專案的最新內容拉下來即可
+   cd git-example
    git checkout main
    git pull origin main
-   git merge <PR的分支名稱>       # 或直接用 GitHub 的 Merge pull request 按鈕
-   git push origin main
    ```
+
+   > 若不使用網頁合併，才需要改用指令合併（把對方的分支併進來）：
+   >
+   > ```bash
+   > # 在母專案 clone 內
+   > git checkout main
+   > git pull origin main
+   > git fetch upstream
+   > git merge upstream/<PR的分支名稱>
+   > git push origin main
+   > ```
 
 6. **同步母專案的最新內容**（避免衝突）：
 
@@ -94,9 +113,10 @@ git branch -d developGitBranch
 
 | 項目 | 說明 |
 | ---- | ---- |
-| 誰能 merge | 母專案管理者（上游 repo 的擁有者） |
+| 誰能 merge | 母專案管理者（上游 repo 的擁有者），於 PR 頁面按 **Merge pull request** |
 | 誰不能 merge | fork 者只能提 PR，不能直接改母專案 |
 | PR 方向 | 自己的 fork 分支 → 母專案的 `main` 或 `developGitBranch` |
+| 合併方式 | 本次作業為 **GitHub 網頁合併**（Pull Request → Create a merge commit → Confirm merge） |
 | 合併前 | 建議先 `git fetch upstream` 同步最新程式碼，並先在自己分支測試 |
-| 合併後 | 刪除已合併的分支（本地 `git branch -d`、遠端 `git push origin --delete`） |
-| 衝突 | 由提出 PR 的人自行解決後再更新 PR |
+| 合併後 | 網頁合併後只需 `git pull origin main`；再刪除已合併的分支（本地 `git branch -d`、遠端 `git push origin --delete`） |
+| 衝突 | 若顯示 **This branch has conflicts**，由提出 PR 的人自行解決後再更新 PR |

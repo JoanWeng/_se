@@ -81,3 +81,50 @@ Browser ── :8080 ──▶ nginx:80（serve 展示頁＋反向代理）
 
 - Rust 建置映像須用新版（`rust:bookworm`）：舊版 Cargo（如 1.78）無法解析需 `edition2024` 的新依賴（`crypto-common 0.2.2`），會以 exit 101 失敗
 - 若 `Pulling fs layer` 長時間停在 0B，屬該環境對 Docker Hub CDN 連線異常，換網路後重跑即可續建（layer 快取會保留）
+
+## 七、Docker 學習記錄
+
+### 核心觀念
+
+- **Image（映像）**：唯讀模板，如 `postgres:16-alpine`；本專案 4 個後端/代理映像是自己用 Dockerfile 建的
+- **Container（容器）**：映像跑起來的實例；`down -v` 會刪容器，Image 留下，所以重建很快
+- **Volume**：DB 資料存在 `pgdata` volume，容器刪掉資料還在；`down -v` 才會清掉
+- **Network**：自訂 `app-net` 讓 5 容器用服務名互連（`db`、`api-node`…），只有 nginx 的 8080 對外
+- **Layer 快取**：Dockerfile 每行一層，沒變的行直接重用；改 `main.rs` 只會重跑 Rust 編譯那層之後
+
+### Dockerfile 常用指令（本專案實際用到的）
+
+| 指令 | 作用 | 範例出處 |
+|---|---|---|
+| `FROM` | 基底映像，`AS builder` 命名供 multi-stage 用 | rust builder 階段 |
+| `WORKDIR` | 容器內工作目錄 | 各後端 `/app` |
+| `COPY` | 複製建置 context 檔案進映像 | 注意 context 路徑（nginx 用專案根當 context） |
+| `RUN` | 建置期執行（裝套件、編譯） | `npm install`、`cargo build --release` |
+| `EXPOSE` | 宣告端口（僅文件用，對外仍靠 compose ports） | 3000/5000/8000/80 |
+| `CMD` | 容器啟動命令 | `node server.js`、`./api-rust` |
+
+### Compose 常用欄位（本專案實際用到的）
+
+- `build: {context, dockerfile}` 指定怎麼建；`image:` 直接用現成映像（db）
+- `ports: "8080:80"` 本機:容器；`environment` 傳 `DATABASE_URL` 等設定
+- `depends_on: db: {condition: service_healthy}` 等 DB 的 `healthcheck`（`pg_isready`）通過才啟動後端
+- `volumes` 掛載 DB 資料＋唯讀掛 `init.sql` 到 `/docker-entrypoint-initdb.d/`（首次啟動自動執行建表）
+
+### 常用指令
+
+```bash
+docker compose up --build -d   # 建置＋背景啟動
+docker compose ps              # 看容器狀態（要在有 yml 的目錄下）
+docker compose logs -f <服務>   # 追 log；--tail=30 只看尾段
+docker compose down / down -v  # 停；-v 連 volume 全清
+docker images                  # 看本機映像（重建快的原因）
+docker rmi <映像> / builder prune -f  # 從零建置前清映像＋建置快取
+docker compose build --progress=plain <服務>  # 看完整建置輸出抓錯
+```
+
+### 這次學到的除錯經驗
+
+1. 建置錯先看**第一個** `error`（如 `edition2024` → 換新版 Rust 基底），exit code 只是總稱
+2. `grep "^error"` 沒東西就 `tail` 看全文；build 輸出預設是摺疊的進度條，要加 `--progress=plain`
+3. `curl` 通但瀏覽器空白 → 先分清是伺服器還是瀏覽器問題（`curl -w HTTP:%{http_code}`）；localhost 只對本機有效，他機要用 LAN IP
+4. 本機防火牆 `ufw inactive`＋容器綁 `0.0.0.0`，區網連不上就是上層網路擋的

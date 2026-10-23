@@ -10,7 +10,7 @@
 - [Rust](https://www.rust-lang.org/) 1.75+（只在跑 Rust 後端／`E2E_RUST=1` 時需要）
 
 ```bash
-cd 06/message-board
+cd 06
 npm install                      # 安裝 npm 套件
 npx playwright install chromium  # e2e 測試用的無頭瀏覽器
 ```

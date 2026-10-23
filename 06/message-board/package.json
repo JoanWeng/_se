@@ -1,0 +1,26 @@
+{
+  "name": "message-board",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "留言板：Node.js + Rust 雙後端，含單元/系統/e2e 三種測試",
+  "scripts": {
+    "start": "node server-node/src/server.js",
+    "start:rust": "cargo run --manifest-path server-rust/Cargo.toml",
+    "test": "npm run test:unit && npm run test:system",
+    "test:unit": "vitest run test/unit",
+    "test:system": "vitest run test/system",
+    "test:rust": "cargo test --manifest-path server-rust/Cargo.toml",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run test:rust && npm run test:e2e"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.2",
+    "jsdom": "^24.1.3",
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.9"
+  }
+}

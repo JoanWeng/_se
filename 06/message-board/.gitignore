@@ -1,0 +1,6 @@
+node_modules/
+server-rust/target/
+test-results/
+playwright-report/
+blob-report/
+.DS_Store

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>留言板</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>留言板</h1>
+
+    <div class="toolbar">
+      <label for="backend-select">後端：</label>
+      <select id="backend-select" data-testid="backend-select">
+        <option value="node">Node.js (:3000)</option>
+        <option value="rust">Rust (:8000)</option>
+      </select>
+      <span id="status" data-testid="status"></span>
+    </div>
+
+    <form id="message-form" data-testid="message-form">
+      <input
+        id="name"
+        data-testid="name-input"
+        maxlength="20"
+        placeholder="暱稱（最多 20 字）"
+        autocomplete="off"
+      />
+      <textarea
+        id="content"
+        data-testid="content-input"
+        rows="3"
+        maxlength="200"
+        placeholder="說點什麼…（最多 200 字）"
+      ></textarea>
+      <button id="submit-btn" data-testid="submit-btn" type="submit">送出留言</button>
+      <p id="error-msg" data-testid="error-msg" role="alert" hidden></p>
+    </form>
+
+    <p id="empty-state" data-testid="empty-state" hidden>
+      還沒有任何留言，來寫下第一則吧！
+    </p>
+    <ul id="message-list" data-testid="message-list"></ul>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

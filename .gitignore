@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# 作業03:免安裝工具鏈與 .deb(不入版控)
+03/_toolchain/
+*.deb
+

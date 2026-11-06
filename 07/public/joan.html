@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>留言板 - joan</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>留言板管理後台 <a class="back" href="/">回留言板</a></h1>
+
+    <section id="login-section" class="form">
+      <label class="field">
+        管理員密碼
+        <input id="admin-password" type="password" />
+      </label>
+      <div class="form-actions">
+        <span id="login-error" class="error"></span>
+        <button id="login-btn" type="button">登入</button>
+      </div>
+    </section>
+
+    <section id="panel" hidden>
+      <h2>留言（含 IP）</h2>
+      <ul id="msg-list" class="list"></ul>
+      <nav id="msg-pager" class="pager"></nav>
+
+      <h2>封鎖名單</h2>
+      <form id="ban-form" class="form">
+        <div class="row">
+          <label class="field">
+            IP
+            <input id="ban-ip" maxlength="64" />
+          </label>
+          <label class="field">
+            原因（可留空）
+            <input id="ban-reason" maxlength="100" />
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit">封鎖</button>
+        </div>
+      </form>
+      <table id="banned-table">
+        <thead>
+          <tr><th>IP</th><th>原因</th><th>時間</th><th></th></tr>
+        </thead>
+        <tbody id="ban-list"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/joan.js"></script>
+</body>
+</html>

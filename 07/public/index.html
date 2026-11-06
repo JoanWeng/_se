@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>留言板</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>留言板 <span id="total" class="total"></span></h1>
+
+    <form id="form" class="form">
+      <div class="row">
+        <label class="field">
+          暱稱
+          <input id="name" name="name" maxlength="20" required />
+        </label>
+        <label class="field">
+          密碼（刪除用）
+          <input id="password" name="password" type="password" maxlength="64" required />
+        </label>
+      </div>
+      <label class="field">
+        留言
+        <textarea id="content" name="content" maxlength="500" rows="4" required></textarea>
+      </label>
+      <div class="form-actions">
+        <span id="form-error" class="error"></span>
+        <button type="submit">送出</button>
+      </div>
+    </form>
+
+    <ul id="list" class="list"></ul>
+
+    <nav id="pager" class="pager"></nav>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

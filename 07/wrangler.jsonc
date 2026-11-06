@@ -1,0 +1,15 @@
+{
+  "name": "se07-guestbook",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "guestbook",
+      "database_id": "45621fc5-7208-413a-80b2-e040b16420b1"
+    }
+  ]
+}

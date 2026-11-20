@@ -29,6 +29,7 @@ public:
 
     virtual u32 Width() const = 0;
     virtual u32 Height() const = 0;
+    virtual bool IsMinimized() const = 0;
 
     virtual void SetVSync(bool enabled) = 0;
     virtual bool IsVSync() const = 0;

@@ -10,9 +10,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 option(ENGINE_WITH_ASAN "Enable AddressSanitizer in Debug" OFF)
+option(ENGINE_BUILD_TESTS "Build engine tests" ON)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(CompilerWarnings)
 
 add_subdirectory(engine)
 add_subdirectory(sandbox)
+
+if(ENGINE_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
